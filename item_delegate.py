@@ -1,9 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
 
 class item_delegate(QtWidgets.QStyledItemDelegate):
-    def __init__(self, owner, choices):
+    def __init__(self, owner):
         super().__init__(owner)
-        self._items = choices
+        self._items = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     def paint(self, painter, option, index):
         if isinstance(self.parent(), QtWidgets.QAbstractItemView):
@@ -20,9 +20,9 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
         editor = self.sender()
         self.commitData.emit(editor)
 
-    def setEditorData(self, editor, index):
+    def setEditorData(self, editor, index): #dummy
         value = index.data(QtCore.Qt.DisplayRole)
-        i = self._items.index(value)
+        i = self._items.index(str(value))
         editor.setCurrentIndex(i)
 
     def setModelData(self, editor, model, index):

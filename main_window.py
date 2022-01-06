@@ -1,11 +1,10 @@
 from PyQt5 import QtWidgets
+from item_delegate import item_delegate
 from table_model import table_model
+from sudoku import *
 
 height = 600
-width = 1000 
-
-def generate_empty_data():
-    return [[0 for i in range(9)] for j in range(9)]
+width = 600 
 
 class main_window(QtWidgets.QMainWindow):
     def __init__(self):
@@ -21,6 +20,14 @@ class main_window(QtWidgets.QMainWindow):
         data = generate_empty_data()
 
         self._table_view = QtWidgets.QTableView()
+
+        table_item_delegate = item_delegate(self._table_view)
+
+        self._table_view.setItemDelegate(table_item_delegate)
         self._table_model = table_model(data)
 
         self._table_view.setModel(self._table_model)
+
+        #Hide headers
+        self._table_view.horizontalHeader().hide()
+        self._table_view.verticalHeader().hide()
