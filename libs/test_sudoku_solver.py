@@ -1,7 +1,7 @@
-from ..sudoku_solver import *
-import sudoku
+from libs.sudoku import *
+from libs.solver import *
 
-dummy_matrix = sudoku.generate_empty_data()
+dummy_matrix = generate_empty_data()
 dummy_matrix[0][0] = 1
 
 # Returns True if all sudoku_solver unit tests are PASS, False, otherwise

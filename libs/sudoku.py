@@ -1,4 +1,4 @@
-import sudoku_solver
+import libs.solver as solver
 
 # 9x9 matrix filled with 0
 def generate_empty_data():

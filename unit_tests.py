@@ -1,4 +1,4 @@
-import test_sudoku_solver
+import libs.test_sudoku_solver as test_sudoku_solver
 
 if __name__ == '__main__':
     if (test_sudoku_solver.test_sudoku_solver()):

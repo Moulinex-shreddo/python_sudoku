@@ -1,4 +1,4 @@
-from sudoku_solver.brute_force import *
+import libs.brute_force as brute_force
 
 # Returns a solution of the given 9x9 matrix
 def solve(m):
