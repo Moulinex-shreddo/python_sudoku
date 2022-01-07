@@ -1,14 +1,24 @@
 import libs.solver as solver
 
-# Returns True if both elements are in the same row, False if they are not
-def same_row(a, b):
-    return False
+# Returns True if the matrix could be solved with brute_force algorithm, False otherwise
+def solve(m):
+    return recursive_solve(m)
 
-# Returns True if both elements are in the same column, False, if they are not
-def same_col(a, b):
-    return False
+# recursive_solve is a separate function for clarity purpose
+def recursive_solve(m):
 
-# Returns True if both elements are in the same block, False if they are not
-def same_block(a, b):
-    return False
+    for x in range(len(m[0])):
+        for y in range(len(m[1])):
+            if m[x][y] == 0:
 
+                for i in range(1, 9):
+                    if solver.is_number_valid(m, i, (x, y)):
+                        m[x][y] = i
+                        if recursive_solve(m):
+                            return True
+
+                # If no valid number was found for (x, y) cell, then the sudoku is not solvable with
+                # the actual configuration and we need to backtrack
+                return False
+
+    return solver.is_grid_valid(m)

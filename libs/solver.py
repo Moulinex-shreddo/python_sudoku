@@ -1,14 +1,18 @@
 import libs.brute_force as brute_force
+from libs.sudoku import *
 
-# Returns a solution of the given 9x9 matrix
+# Returns a solution of the given 9x9 matrix, 0-filled matrix if there is no solution
 def solve(m):
-    return m
+    if brute_force.solve(m):
+        return m
+
+    return generate_empty_data()
 
 # Returns True if the matrix describes a solvable Sudoku and False if not
 def is_solvable(m):
-    if 1:
-        return True
-    return False
+    # Make a copy of the matrix to not solve it, for this is not this function's purpose
+    n = m
+    return brute_force.solve(n)
 
 # Returns True is the matrix describes a Sudoku with multiple possible solutions and False if not
 def has_multiple_solutions(m):
@@ -33,8 +37,16 @@ def is_number_valid(m, n, cell):
 
     for i in range(b[0] * 3, b[0] * 3 + 3):
         for j in range(b[1] * 3, b[1] * 3 + 3):
-            if m[i][j] == n and b != cell:
+            if m[i][j] == n and (i, j) != cell:
                 return False
 
     return True
 
+# Returns True if the 9x9 matrix represents a solved sudoku, False otherwise
+def is_grid_valid(m):
+    for x in range(len(m[0])):
+        for y in range(len(m[1])):
+            if not is_number_valid(m, m[x][y], (x, y)):
+                return False
+                
+    return True
