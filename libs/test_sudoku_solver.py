@@ -1,5 +1,6 @@
 from libs.sudoku import *
 from libs.solver import *
+import libs.ansi as ansi
 
 dummy_matrix = generate_empty_data()
 dummy_matrix[0][0] = 1
@@ -14,9 +15,9 @@ def test_sudoku_solver():
     b &= test_invalid_block()
 
     if b:
-        print("test_sudoku_solver : PASS")
+        print(ansi.GREEN + "test_sudoku_solver : PASS" + ansi.RESET)
     else:
-        print("test_sudoku_solver : FAIL")
+        print(ansi.RED + "test_sudoku_solver : FAIL" + ansi.RESET)
 
     return b
 
@@ -26,9 +27,9 @@ def test_valid_number():
     b = is_number_valid(dummy_matrix, 5, (1, 1))
 
     if b:
-        print("test_sudoku_solver/valid_number : PASS")
+        print(ansi.GREEN + "test_sudoku_solver/valid_number : PASS" + ansi.RESET)
     else:
-        print("test_sudoku_solver/valid_number : FAIL")
+        print(ansi.RED + "test_sudoku_solver/valid_number : FAIL" + ansi.RESET)
 
     return b
 
@@ -37,9 +38,9 @@ def test_invalid_row():
     b = not is_number_valid(dummy_matrix, 1, (0, 5))
 
     if b:
-        print("test_sudoku_solver/invalid_row : PASS")
+        print(ansi.GREEN + "test_sudoku_solver/invalid_row : PASS" + ansi.RESET)
     else:
-        print("test_sudoku_solver/invalid_row : FAIL")
+        print(ansi.RED + "test_sudoku_solver/invalid_row : FAIL" + ansi.RESET)
 
     return b
 
@@ -48,9 +49,9 @@ def test_invalid_col():
     b = not is_number_valid(dummy_matrix, 1, (5, 0))
 
     if b:
-        print("test_sudoku_solver/invalid_col : PASS")
+        print(ansi.GREEN + "test_sudoku_solver/invalid_col : PASS" + ansi.RESET)
     else:
-        print("test_sudoku_solver/invalid_col : FAIL")
+        print(ansi.RED + "test_sudoku_solver/invalid_col : FAIL" + ansi.RESET)
 
     return b
 
@@ -59,8 +60,8 @@ def test_invalid_block():
     b = not is_number_valid(dummy_matrix, 1, (1, 1))
 
     if b:
-        print("test_sudoku_solver/invalid_block : PASS")
+        print(ansi.GREEN + "test_sudoku_solver/invalid_block : PASS" + ansi.RESET)
     else:
-        print("test_sudoku_solver/invalid_block : FAIL")
+        print(ansi.RED + "test_sudoku_solver/invalid_block : FAIL" + ansi.RESET)
 
     return b
