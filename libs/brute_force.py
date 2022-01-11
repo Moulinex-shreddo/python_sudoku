@@ -11,14 +11,17 @@ def recursive_solve(m):
         for y in range(len(m[1])):
             if m[x][y] == 0:
 
-                for i in range(1, 9):
+                for i in range(1, 10): # Python range does not include last element
                     if solver.is_number_valid(m, i, (x, y)):
                         m[x][y] = i
                         if recursive_solve(m):
                             return True
+                        else:
+                            m[x][y] = 0
 
                 # If no valid number was found for (x, y) cell, then the sudoku is not solvable with
                 # the actual configuration and we need to backtrack
                 return False
 
     return solver.is_grid_valid(m)
+    
