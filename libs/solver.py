@@ -1,4 +1,5 @@
 import libs.brute_force as brute_force
+import libs.constraint_propagation as constraint_propagation
 from libs.sudoku import *
 
 # Returns a solution of the given 9x9 matrix, 0-filled matrix if there is no solution
@@ -6,13 +7,13 @@ def solve(m):
     if brute_force.solve(m):
         return m
 
-    return generate_empty_data()
+    return generate_empty_data(9)
 
 # Returns True if the matrix describes a solvable Sudoku and False if not
 def is_solvable(m):
     # Make a copy of the matrix to not solve it, for this is not this function's purpose
     n = m
-    return brute_force.solve(n)
+    return constraint_propagation.solve(n)
 
 # Returns True is the matrix describes a Sudoku with multiple possible solutions and False if not
 def has_multiple_solutions(m):

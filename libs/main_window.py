@@ -17,7 +17,7 @@ class main_window(QtWidgets.QMainWindow):
         self.setCentralWidget(self._table_view)
 
     def create_table_view(self):
-        data = generate_empty_data()
+        data = generate_empty_data(9)
 
         self._table_view = QtWidgets.QTableView()
 

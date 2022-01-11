@@ -24,4 +24,3 @@ def recursive_solve(m):
                 return False
 
     return solver.is_grid_valid(m)
-    

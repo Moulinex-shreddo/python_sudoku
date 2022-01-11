@@ -1,9 +1,10 @@
 from libs.sudoku import *
 from libs.solver import *
 from libs.brute_force import *
+from libs.constraint_propagation import *
 import libs.ansi as ansi
 
-dummy_matrix = generate_empty_data()
+dummy_matrix = generate_empty_data(9)
 dummy_matrix[0][0] = 1
 
 dummy_valid_matrix = [
@@ -41,6 +42,7 @@ def test_sudoku_solver():
     b &= test_valid_grid()
     b &= test_invalid_grid()
     b &= test_brute_force_solver()
+    b &= test_constaint_propagation_solver()
 
     if b:
         print(ansi.GREEN + "test_sudoku_solver : PASS" + ansi.RESET)
@@ -121,11 +123,25 @@ def test_invalid_grid():
 
 # Returns True if the brute_force algorithm finds a solution to the unsolved matrix, False otherwise
 def test_brute_force_solver():
-    b = brute_force.solve(dummy_unsolved_matrix)
+    # Copy the matrix before because we need it unsolved for other unit tests
+    m = dummy_unsolved_matrix
+    b = brute_force.solve(m)
 
     if b:
         print(ansi.GREEN + "test_sudoku_solver/brute_force_solver : PASS" + ansi.RESET)
     else:
         print(ansi.RED + "test_sudoku_solver/brute_force_solver : FAIL" + ansi.RESET)
+
+    return b
+
+# Returns True if the constraint_propagation algorithm finds a solution to the unsolved matrix, False otherwise
+def test_constaint_propagation_solver():
+    m = dummy_unsolved_matrix
+    b = constraint_propagation.solve(m)
+
+    if b:
+        print(ansi.GREEN + "test_sudoku_solver/constraint_propagation_solver : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_sudoku_solver/constraint_propagation_solver : FAIL" + ansi.RED)
 
     return b

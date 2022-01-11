@@ -1,8 +1,8 @@
 import libs.solver as solver
 
 # 9x9 matrix filled with 0
-def generate_empty_data():
-    return [[0 for i in range(9)] for j in range(9)]
+def generate_empty_data(n):
+    return [[0 for i in range(n)] for j in range(n)]
 
 # 9x9 matrix containing a sudoku
 def generate_sudoku():
@@ -12,7 +12,7 @@ def generate_sudoku():
 class sudoku:
     def __init__(self):
         # Generate 9x9 empty matrix
-        self._complete = generate_empty_data()
+        self._complete = generate_empty_data(9)
         self._partial = self.hide(self._complete)
 
     # Returns the generated 9x9 matrix
