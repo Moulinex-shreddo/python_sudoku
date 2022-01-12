@@ -32,6 +32,29 @@ class grid:
         c = (c[0] % 3, c[1] % 3)
 
         return self._data[b[0]][b[1]].get_cell_data(c)
+
+    def get_row_values(self, r):
+        row = []
+        for i in range(0, 9):
+            row.append(self.get_cell_data((r, i)))
+          
+        return row
+
+    def get_column_values(self, c):
+        col = []
+        for i in range(0, 9):
+            col.append(self.get_cell_data((i, c)))
+
+        return col
+
+    def get_block_values(self, b):
+        r = []
+        for i in range(0, 3):
+            for j in range(0, 3):
+                r.append(self._data[b[0]][b[1]].get_cell_data((i, j)))
+
+        return r
+
     
 
 class block:

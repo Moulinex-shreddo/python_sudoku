@@ -17,6 +17,9 @@ def test_constraint_propagation():
     b = True
 
     b &= test_fill_grid()
+    b &= test_get_row_values()
+    b &= test_get_col_values()
+    b &= test_get_block_values()
 
     if b:
         print(ansi.GREEN + "test_constraint_propagation : PASS" + ansi.RESET)
@@ -39,5 +42,56 @@ def test_fill_grid():
         print(ansi.GREEN + "test_constraint_propagation/fill_grid : PASS" + ansi.RESET)
     else:
         print(ansi.RED + "test_constraint_propagation/fill_grid : FAIL" + ansi.RESET)
+
+    return b
+
+def test_get_row_values():
+    m = dummy_valid_matrix
+
+    grid = constraint_propagation.grid()
+    grid.fill(m)
+
+    valid_row = [5, 3, 4, 6, 7, 8, 9, 1, 2]
+
+    b = valid_row == grid.get_row_values(0)
+
+    if b:
+        print(ansi.GREEN + "test_constraint_propagation/get_row_values : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_constraint_propagation/get_row_values : FAIL" + ansi.RESET)
+
+    return b
+
+def test_get_col_values():
+    m = dummy_valid_matrix
+
+    grid = constraint_propagation.grid()
+    grid.fill(m)
+
+    valid_col = [5, 6, 1, 8, 4, 7, 9, 2, 3]
+
+    b = valid_col == grid.get_column_values(0)
+
+    if b:
+        print(ansi.GREEN + "test_constraint_propagation/get_col_values : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_constraint_propagation/get_col_values : FAIL" + ansi.RESET)
+
+    return b
+
+def test_get_block_values():
+    m = dummy_valid_matrix
+
+    grid = constraint_propagation.grid()
+    grid.fill(m)
+
+    valid_block = [5, 3, 4, 6, 7, 2, 1, 9, 8]
+    
+    b = valid_block == grid.get_block_values((0, 0))
+
+    if b:
+        print(ansi.GREEN + "test_constraint_propagation/get_block_values : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_constraint_propagation/get_block_values : FAIL" + ansi.RESET)
 
     return b
