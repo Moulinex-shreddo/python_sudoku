@@ -1,10 +1,10 @@
-from libs.sudoku import *
+import libs.sudoku as sudoku
 from libs.solver import *
 from libs.brute_force import *
 from libs.constraint_propagation import *
 import libs.ansi as ansi
 
-dummy_matrix = generate_empty_data(9)
+dummy_matrix = sudoku.generate_empty_data(9)
 dummy_matrix[0][0] = 1
 
 dummy_valid_matrix = [
