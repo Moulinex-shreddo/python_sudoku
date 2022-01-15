@@ -6,7 +6,28 @@ def generate_empty_data(type, n):
 
 # Returns True if the constraint propagation algorithm could resolve the grid, False otherwise
 def solve(m):
-    return False
+    sudoku = grid()
+    sudoku.fill(m)
+
+    j = 2
+    # Let j = 2 so that each constraint has the time to propagate over the full grid
+    while j > 0:
+        for x in range(0, 9):
+            for y in range(0, 9):
+                if sudoku.get_cell_data((x, y)) == 0:
+                    c = sudoku._data[x // 3][y // 3]._data[x % 3][y % 3]
+                    for i in c._candidates:
+                        if i in sudoku.get_column_values(y) or i in sudoku.get_row_values(x) or i in sudoku.get_block_values((x // 3, y //3)):
+                            c._candidates.remove(i)
+                            j += 1
+                
+                    if len(c._candidates) == 1:
+                        c._data = c._candidates[0]
+
+        j -= 1
+
+    m = sudoku.get_data()
+    return solver.is_grid_valid(m)
 
 class grid:
     def __init__(self):
@@ -75,7 +96,8 @@ class cell:
 
     def fill(self, i):
         self._data = i
-        self._candidates = 0
+        if i != 0:
+            self._candidates = [i]
 
     def get_data(self):
         return self._data

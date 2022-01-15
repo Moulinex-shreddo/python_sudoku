@@ -1,3 +1,5 @@
+import copy
+
 import libs.brute_force as brute_force
 import libs.constraint_propagation as constraint_propagation
 from libs.sudoku import *
@@ -12,7 +14,7 @@ def solve(m):
 # Returns True if the matrix describes a solvable Sudoku and False if not
 def is_solvable(m):
     # Make a copy of the matrix to not solve it, for this is not this function's purpose
-    n = m
+    n = copy.deepcopy(m)
     return constraint_propagation.solve(n)
 
 # Returns True is the matrix describes a Sudoku with multiple possible solutions and False if not

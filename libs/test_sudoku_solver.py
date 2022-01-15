@@ -1,3 +1,5 @@
+import copy
+
 import libs.sudoku as sudoku
 from libs.solver import *
 from libs.brute_force import *
@@ -124,7 +126,7 @@ def test_invalid_grid():
 # Returns True if the brute_force algorithm finds a solution to the unsolved matrix, False otherwise
 def test_brute_force_solver():
     # Copy the matrix before because we need it unsolved for other unit tests
-    m = dummy_unsolved_matrix
+    m = copy.deepcopy(dummy_unsolved_matrix)
     b = brute_force.solve(m)
 
     if b:
@@ -136,7 +138,8 @@ def test_brute_force_solver():
 
 # Returns True if the constraint_propagation algorithm finds a solution to the unsolved matrix, False otherwise
 def test_constaint_propagation_solver():
-    m = dummy_unsolved_matrix
+    m = copy.deepcopy(dummy_unsolved_matrix)
+
     b = constraint_propagation.solve(m)
 
     if b:
