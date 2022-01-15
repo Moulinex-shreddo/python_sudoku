@@ -45,6 +45,7 @@ def test_sudoku_solver():
     b &= test_invalid_grid()
     b &= test_brute_force_solver()
     b &= test_constaint_propagation_solver()
+    b &= test_constraint_propagation_impossible_solve()
 
     if b:
         print(ansi.GREEN + "test_sudoku_solver : PASS" + ansi.RESET)
@@ -146,5 +147,17 @@ def test_constaint_propagation_solver():
         print(ansi.GREEN + "test_sudoku_solver/constraint_propagation_solver : PASS" + ansi.RESET)
     else:
         print(ansi.RED + "test_sudoku_solver/constraint_propagation_solver : FAIL" + ansi.RED)
+
+    return b
+
+def test_constraint_propagation_impossible_solve():
+    m = sudoku.generate_empty_data(9)
+
+    b = not constraint_propagation.solve(m)
+
+    if b:
+        print(ansi.GREEN + "test_sudoku_solver/constraint_propagation_impossible_solve : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_sudoku_solver/constraint_propagation_impossible_solve : FAIL" + ansi.RED)
 
     return b
