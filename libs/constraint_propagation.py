@@ -77,7 +77,6 @@ class grid:
         return r
 
     
-
 class block:
     def __init__(self):
         self._data = generate_empty_data(cell, 3)
@@ -88,7 +87,6 @@ class block:
     def get_cell_data(self, c):
         return self._data[c[0]][c[1]].get_data()
         
-
 class cell:
     def __init__(self):
         self._data = 0

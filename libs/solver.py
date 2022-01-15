@@ -53,3 +53,12 @@ def is_grid_valid(m):
                 return False
                 
     return True
+
+# Returns True if there is at least one empty space in the grid, False otherwise
+def is_grid_filled(m):
+    for x in range(len(m[0])):
+        for y in range(len(m[1])):
+            if m[x][y] == 0:
+                return False
+
+    return True

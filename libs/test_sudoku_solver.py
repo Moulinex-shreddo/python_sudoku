@@ -43,6 +43,8 @@ def test_sudoku_solver():
     b &= test_invalid_block()
     b &= test_valid_grid()
     b &= test_invalid_grid()
+    b &= test_filled_grid()
+    b &= test_not_filled_grid()
     b &= test_brute_force_solver()
     b &= test_constaint_propagation_solver()
     b &= test_constraint_propagation_impossible_solve()
@@ -99,7 +101,7 @@ def test_invalid_block():
 
     return b
 
-# Returns True if we can valid the dummy_valid_grid, False otherwise
+# Returns True if we can validate the dummy_valid_grid, False otherwise
 def test_valid_grid():
     b = is_grid_valid(dummy_valid_matrix)
 
@@ -110,7 +112,7 @@ def test_valid_grid():
 
     return b
 
-# Returns True if we fail to valid an invalid grid, False otherwise
+# Returns True if we fail to validate an invalid grid, False otherwise
 def test_invalid_grid():
     m = dummy_valid_matrix
     m[0][0] = 3
@@ -124,9 +126,32 @@ def test_invalid_grid():
 
     return b
 
+# Returns True if we can assert that the valid_matrix is completly filled, False otherwise
+def test_filled_grid():
+    b = is_grid_filled(dummy_valid_matrix)
+
+    if b:
+        print(ansi.GREEN + "test_sudoku_solver/filled_grid : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_sudoku_solver/filled_grid : FAIL" + ansi.RESET)
+
+    return b
+
+# Returns True if we fail to assert that the unsolved_matrix is completly filled, False otherwise
+def test_not_filled_grid():
+    b = not is_grid_filled(dummy_unsolved_matrix)
+
+    if b:
+        print(ansi.GREEN + "test_sudoku_solver/not_filled_grid : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_sudoku_solver/not_filled_grid : FAIL" + ansi.RESET)
+
+    return b
+
 # Returns True if the brute_force algorithm finds a solution to the unsolved matrix, False otherwise
 def test_brute_force_solver():
     # Copy the matrix before because we need it unsolved for other unit tests
+    # We need to deep copy it because default assignement operator makes a shallow copy instead
     m = copy.deepcopy(dummy_unsolved_matrix)
     b = brute_force.solve(m)
 
@@ -150,6 +175,7 @@ def test_constaint_propagation_solver():
 
     return b
 
+# Returns True if the constraint_propagation algorithm fails to find a solution to the 0-filled matrix, False otherwise
 def test_constraint_propagation_impossible_solve():
     m = sudoku.generate_empty_data(9)
 
@@ -160,4 +186,4 @@ def test_constraint_propagation_impossible_solve():
     else:
         print(ansi.RED + "test_sudoku_solver/constraint_propagation_impossible_solve : FAIL" + ansi.RED)
 
-    return b
+    return b 
