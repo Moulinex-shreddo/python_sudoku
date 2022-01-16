@@ -15,7 +15,7 @@ def recursive_solve(m):
         for y in range(len(m[1])):
             if m[x][y] == 0:
 
-                for i in range(1, 10): # Python range does not include last element
+                for i in range(1, 10):
                     if solver.is_number_valid(m, i, (x, y)):
                         m[x][y] = i
                         if recursive_solve(m):
@@ -32,15 +32,18 @@ def recursive_solve(m):
 # Returns a randomly generated grid
 # It's more or less the same algorithm as the brute_force solver on an empty grid (and randomly applied)
 def generate():
-    sys.setrecursionlimit(1500)
     m = sudoku.generate_empty_data(9)
 
     recursive_generate(m)
+    recursive_remove_cells(m)
 
     return m
 
 # Recursively generates a sudoku grid
 def recursive_generate(m):
+    # This algorithm exceeds recursion stack limit so we first need to increase it a bit
+    sys.setrecursionlimit(sys.getrecursionlimit() + 1)
+
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
         x = randrange(0, 9)
@@ -75,10 +78,37 @@ def recursive_generate(m):
             if i == r:
                 return False
 
-
     return solver.is_grid_valid(m)
 
-# We need our own random generating number function because the random python module is not that good
+# Removes random cells, but keeps the sudoku grid solvable
+def recursive_remove_cells(m):
+
+    while solver.is_solvable(m):
+        x = randrange(0, 9)
+        y = randrange(0, 9)
+        s = coordinates(x, y)
+
+        while m[s._x][s._y] == 0:
+            s._x += 1
+            if s._x == 9:
+                s._x = 0
+                s._y = s._y + 1
+
+                if s._y == 9:
+                    s._y = 0
+
+        i = m[s._x][s._y]
+        m[s._x][s._y] = 0
+
+        if recursive_remove_cells(m):
+            return True
+        else:
+            m[s._x][s._y] = i
+            return solver.is_solvable(m)
+
+    return solver.is_solvable(m)
+
+# We need our own random generating number function because the random python module is not that good (and may cause infinite loop)
 # Returns a integer between a and b, b excluded
 def randrange(a, b):
     return time.time_ns()%b + a

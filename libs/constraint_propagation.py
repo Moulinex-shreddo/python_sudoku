@@ -29,6 +29,7 @@ def solve(m):
     m = sudoku.get_data()
     return solver.is_grid_valid(m)
 
+# We need the grid to be a bit smarter for the constraint propagation algorithm, so here are grid/block/cell classes implementations
 class grid:
     def __init__(self):
         self._data = generate_empty_data(block, 3)
@@ -75,7 +76,6 @@ class grid:
                 r.append(self._data[b[0]][b[1]].get_cell_data((i, j)))
 
         return r
-
     
 class block:
     def __init__(self):

@@ -1,11 +1,13 @@
 import libs.ansi as ansi
 import libs.brute_force as brute_force
-from libs.test_sudoku_solver import test_brute_force_solver
+import libs.solver as solver
+import libs.sudoku as sudoku
 
 def test_generator():
     b = True
 
-    b &= test_brute_force_generator()
+    b &= test_brute_force_recursive_generate()
+    b &= test_brute_force_recursive_remove_cells()
 
     if b:
         print(ansi.GREEN + "test_generator : PASS" + ansi.RESET)
@@ -14,14 +16,29 @@ def test_generator():
 
     return b
 
-def test_brute_force_generator():
+def test_brute_force_recursive_generate():
     b = True
-
-    m = brute_force.generate()
+    
+    for i in range(1):
+        m = sudoku.generate_empty_data(9)
+        brute_force.recursive_generate(m)
+        b &= solver.is_grid_valid(m)
 
     if b:
-        print(ansi.GREEN + "test_generator/brute_force_generator : PASS" + ansi.RESET)
+        print(ansi.GREEN + "test_generator/brute_force_recursive_generate : PASS" + ansi.RESET)
     else:
-        print(ansi.RED + "test_generator/brute_force_generator : FAIL" + ansi.RESET)
+        print(ansi.RED + "test_generator/brute_force_recursive_generate : FAIL" + ansi.RESET)
+
+    return b
+
+def test_brute_force_recursive_remove_cells():
+    b = True
+    m = brute_force.generate()
+    b &= solver.is_solvable(m)
+
+    if b:
+        print(ansi.GREEN + "test_generator/brute_force_recursive_remove_cells : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_generator/brute_force_recursive_remove_cells : FAIL" + ansi.RESET)
 
     return b
