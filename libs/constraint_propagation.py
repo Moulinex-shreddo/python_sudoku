@@ -1,5 +1,4 @@
 import libs.solver as solver
-import libs.sudoku as sudoku
 
 def generate_empty_data(type, n):
     return [[type() for i in range(n)] for j in range(n)]

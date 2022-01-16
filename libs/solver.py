@@ -2,7 +2,10 @@ import copy
 
 import libs.brute_force as brute_force
 import libs.constraint_propagation as constraint_propagation
-from libs.sudoku import *
+
+# Returns a 9x9 matrix filled with 0
+def generate_empty_data(n):
+    return [[0 for i in range(n)] for j in range(n)]
 
 # Returns a solution of the given 9x9 matrix, 0-filled matrix if there is no solution
 def solve(m):

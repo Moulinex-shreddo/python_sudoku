@@ -1,7 +1,6 @@
 import libs.ansi as ansi
 import libs.brute_force as brute_force
 import libs.solver as solver
-import libs.sudoku as sudoku
 
 def test_generator():
     b = True
@@ -18,9 +17,9 @@ def test_generator():
 
 def test_brute_force_recursive_generate():
     b = True
-    
+
     for i in range(1):
-        m = sudoku.generate_empty_data(9)
+        m = solver.generate_empty_data(9)
         brute_force.recursive_generate(m)
         b &= solver.is_grid_valid(m)
 

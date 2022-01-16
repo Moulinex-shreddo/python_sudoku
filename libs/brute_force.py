@@ -2,7 +2,6 @@ import sys
 import time
 
 import libs.solver as solver
-import libs.sudoku as sudoku
 
 # Returns True if the matrix could be solved with brute_force algorithm, False otherwise
 def solve(m):
@@ -32,7 +31,7 @@ def recursive_solve(m):
 # Returns a randomly generated grid
 # It's more or less the same algorithm as the brute_force solver on an empty grid (and randomly applied)
 def generate():
-    m = sudoku.generate_empty_data(9)
+    m = solver.generate_empty_data(9)
 
     recursive_generate(m)
     recursive_remove_cells(m)

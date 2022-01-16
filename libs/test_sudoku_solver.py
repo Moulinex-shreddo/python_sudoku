@@ -1,12 +1,11 @@
 import copy
 
-import libs.sudoku as sudoku
 from libs.solver import *
 from libs.brute_force import *
 from libs.constraint_propagation import *
 import libs.ansi as ansi
 
-dummy_matrix = sudoku.generate_empty_data(9)
+dummy_matrix = solver.generate_empty_data(9)
 dummy_matrix[0][0] = 1
 
 dummy_valid_matrix = [
@@ -177,7 +176,7 @@ def test_constaint_propagation_solver():
 
 # Returns True if the constraint_propagation algorithm fails to find a solution to the 0-filled matrix, False otherwise
 def test_constraint_propagation_impossible_solve():
-    m = sudoku.generate_empty_data(9)
+    m = solver.generate_empty_data(9)
 
     b = not constraint_propagation.solve(m)
 
