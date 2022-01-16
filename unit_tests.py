@@ -8,7 +8,7 @@ if __name__ == '__main__':
 
     b &= test_sudoku_solver.test_sudoku_solver()
     b &= test_constraint_propagation.test_constraint_propagation()
-    #b &= test_generator.test_generator()
+    b &= test_generator.test_generator()
 
     if b:
         print(ansi.GREEN + "Global Status : PASS" + ansi.RESET)

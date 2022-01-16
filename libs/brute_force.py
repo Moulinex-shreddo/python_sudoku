@@ -1,6 +1,5 @@
 import sys
-from random import seed, randrange
-from datetime import datetime
+import time
 
 import libs.solver as solver
 import libs.sudoku as sudoku
@@ -36,23 +35,21 @@ def generate():
     sys.setrecursionlimit(1500)
     m = sudoku.generate_empty_data(9)
 
-    seed(datetime.now())
     recursive_generate(m)
 
     return m
 
 # Recursively generates a sudoku grid
 def recursive_generate(m):
-    
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
         x = randrange(0, 9)
-        y = randrange(0, 9)
+        y = 1 # y is not randomly generated, this would slow the algorithm down by too much
         s = coordinates(x, y)
 
         # Looking for an empty cell to fill, starting from a random one
         while m[s._x][s._y] != 0:
-
+            
             s._x += 1
             if s._x == 9:
                 s._x = 0
@@ -64,7 +61,6 @@ def recursive_generate(m):
         r = randrange(1, 10)
         i = r
         while True:
-
             if solver.is_number_valid(m, i, (s._x, s._y)):
                 m[s._x][s._y] = i
                 if recursive_generate(m):
@@ -81,6 +77,11 @@ def recursive_generate(m):
 
 
     return solver.is_grid_valid(m)
+
+# We need our own random generating number function because the random python module is not that good
+# Returns a integer between a and b, b excluded
+def randrange(a, b):
+    return time.time_ns()%b + a
 
 # We need a class here because tuples are not mutable and structures do not exist
 class coordinates:
