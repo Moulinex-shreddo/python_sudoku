@@ -20,12 +20,6 @@ def is_solvable(m):
     n = copy.deepcopy(m)
     return constraint_propagation.solve(n)
 
-# Returns True is the matrix describes a Sudoku with multiple possible solutions and False if not
-def has_multiple_solutions(m):
-    if 1:
-        return True
-    return False
-
 # Returns True if the number n can be placed in the cell of the Sudoku represented by the 9x9 matrix m
 def is_number_valid(m, n, cell):
     # Check row

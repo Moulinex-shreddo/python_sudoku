@@ -1,7 +1,9 @@
 from PyQt5 import QtWidgets
+
 from libs.item_delegate import item_delegate
 from libs.table_model import table_model
-from libs.sudoku import *
+import libs.solver as solver
+import libs.brute_force as brute_force
 
 height = 600
 width = 900 
@@ -17,7 +19,7 @@ class main_window(QtWidgets.QMainWindow):
         self.setCentralWidget(self._table_view)
 
     def create_table_view(self):
-        data = generate_empty_data(9)
+        data = brute_force.generate()
 
         self._table_view = QtWidgets.QTableView()
 
