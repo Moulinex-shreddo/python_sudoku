@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets, QtCore
 class item_delegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, owner):
         super().__init__(owner)
-        self._items = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        self._items = [" ", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     def paint(self, painter, option, index):
         if isinstance(self.parent(), QtWidgets.QAbstractItemView):
@@ -22,7 +22,10 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
 
     def setEditorData(self, editor, index): #dummy
         value = index.data(QtCore.Qt.DisplayRole)
-        i = self._items.index(str(value))
+        if (str(value) in self._items):
+            i = self._items.index(str(value))
+        else:
+            i = 0    
         editor.setCurrentIndex(i)
 
     def setModelData(self, editor, model, index):

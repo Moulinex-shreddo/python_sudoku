@@ -5,8 +5,12 @@ from libs.table_model import table_model
 import libs.solver as solver
 import libs.brute_force as brute_force
 
-height = 600
-width = 900 
+
+cell_size = 40
+
+height = 9 * (cell_size+1)
+width = height
+
 
 class main_window(QtWidgets.QMainWindow):
     def __init__(self):
@@ -25,10 +29,17 @@ class main_window(QtWidgets.QMainWindow):
 
         table_item_delegate = item_delegate(self._table_view)
 
-        self._table_view.setItemDelegate(table_item_delegate)
         self._table_model = table_model(data)
 
         self._table_view.setModel(self._table_model)
+
+        
+        self._table_view.setItemDelegate(table_item_delegate)
+
+        #Resize
+        for i in range(9):
+            self._table_view.setColumnWidth(i, cell_size)
+            self._table_view.setRowHeight(i, cell_size)
 
         #Hide headers
         self._table_view.horizontalHeader().hide()
