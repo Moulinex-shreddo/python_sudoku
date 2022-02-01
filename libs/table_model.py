@@ -11,10 +11,7 @@ class table_model(QtCore.QAbstractTableModel):
             return self._data[index.row()][index.column()]
 
         if role == Qt.ForegroundRole:
-            value = self._data[index.row()][index.column()]
-
-            if value >= 5:
-                return QtGui.QColor('red')
+            return QtGui.QColor('red')
 
     def rowCount(self, index):
         return len(self._data)

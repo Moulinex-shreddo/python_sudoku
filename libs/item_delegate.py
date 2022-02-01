@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtCore import pyqtSlot
 
 class item_delegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, owner):
@@ -11,9 +12,12 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
         super(item_delegate, self).paint(painter, option, index)
 
     def createEditor(self, parent, option, index):
+        if index.data(QtCore.Qt.DisplayRole) != 0:
+            return
         editor = QtWidgets.QComboBox(parent)
         editor.currentIndexChanged.connect(self.commit_editor)
         editor.addItems(self._items)
+        editor.setEditable(False)
         return editor
 
     def commit_editor(self):
@@ -25,7 +29,7 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
         if (str(value) in self._items):
             i = self._items.index(str(value))
         else:
-            i = 0    
+            i = 0
         editor.setCurrentIndex(i)
 
     def setModelData(self, editor, model, index):
