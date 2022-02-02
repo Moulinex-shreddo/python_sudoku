@@ -1,7 +1,7 @@
 import sys
-import time
 
 import libs.solver as solver
+import libs.lcg as lcg
 
 # Returns True if the matrix could be solved with brute_force algorithm, False otherwise
 def solve(m):
@@ -41,11 +41,11 @@ def generate():
 # Recursively generates a sudoku grid
 def recursive_generate(m):
     # This algorithm exceeds recursion stack limit so we first need to increase it a bit
-    sys.setrecursionlimit(sys.getrecursionlimit() + 1)
+    sys.setrecursionlimit(10000)
 
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
-        x = randrange(0, 9)
+        x = lcg.randrange(0, 9)
         y = 1 # y is not randomly generated, this would slow the algorithm down by too much
         s = coordinates(x, y)
 
@@ -60,7 +60,7 @@ def recursive_generate(m):
                 if s._y == 9:
                     s._y = 0
 
-        r = randrange(1, 10)
+        r = lcg.randrange(1, 9)
         i = r
         while True:
             if solver.is_number_valid(m, i, (s._x, s._y)):
@@ -83,8 +83,8 @@ def recursive_generate(m):
 def recursive_remove_cells(m):
 
     while solver.is_solvable(m):
-        x = randrange(0, 9)
-        y = randrange(0, 9)
+        x = lcg.randrange(0, 9)
+        y = lcg.randrange2(0, 9)
         s = coordinates(x, y)
 
         while m[s._x][s._y] == 0:
@@ -106,11 +106,6 @@ def recursive_remove_cells(m):
             return solver.is_solvable(m)
 
     return solver.is_solvable(m)
-
-# We need our own random generating number function because the random python module is not that good (and may cause infinite loop)
-# Returns a integer between a and b, b excluded
-def randrange(a, b):
-    return time.time_ns()%b + a
 
 # We need a class here because tuples are not mutable and structures do not exist
 class coordinates:
