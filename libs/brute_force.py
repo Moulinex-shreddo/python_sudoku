@@ -33,15 +33,17 @@ def recursive_solve(m):
 def generate():
     m = solver.generate_empty_data(9)
 
+    # Recursive generation algorithm is deprecated since it overflows C stack.
+    sys.setrecursionlimit(5000)
     recursive_generate(m)
     recursive_remove_cells(m)
 
     return m
 
-# Recursively generates a sudoku grid
+# Recursively generates a sudoku grid.
 def recursive_generate(m):
-    # This algorithm exceeds recursion stack limit so we first need to increase it a bit
-    sys.setrecursionlimit(10000)
+    # This algorithm exceeds recursion stack limit so we first need to increase it a bit.
+    # This will eventually lead to stack overflow.
 
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
@@ -79,7 +81,9 @@ def recursive_generate(m):
 
     return solver.is_grid_valid(m)
 
-# Removes random cells, but keeps the sudoku grid solvable
+# Removes random cells, but keeps the sudoku grid solvable.
+# Recursive remove_cells algorithm overflows C stack (Python virtual machine runs C code).
+# Deprecated. Uncomment if you want to toy with stack overflows.
 def recursive_remove_cells(m):
 
     while solver.is_solvable(m):
