@@ -6,7 +6,8 @@ def test_generator():
     b = True
 
     b &= test_brute_force_recursive_generate()
-    b &= test_brute_force_recursive_remove_cells()
+    #b &= test_brute_force_recursive_remove_cells()
+    b &= test_brute_force_iterative_remove_cells()
 
     if b:
         print(ansi.GREEN + "test_generator : PASS" + ansi.RESET)
@@ -30,7 +31,7 @@ def test_brute_force_recursive_generate():
 
     return b
 
-def test_brute_force_recursive_remove_cells():
+#def test_brute_force_recursive_remove_cells():
     b = True
     m = brute_force.generate()
     b &= solver.is_solvable(m)
@@ -39,5 +40,17 @@ def test_brute_force_recursive_remove_cells():
         print(ansi.GREEN + "test_generator/brute_force_recursive_remove_cells : PASS" + ansi.RESET)
     else:
         print(ansi.RED + "test_generator/brute_force_recursive_remove_cells : FAIL" + ansi.RESET)
+
+    return b
+
+def test_brute_force_iterative_remove_cells():
+    b = True
+    m = brute_force.generate()
+    b &= solver.is_solvable(m)
+
+    if b:
+        print(ansi.GREEN + "test_generator/brute_force_iterative_remove_cells : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_generator/brute_force_iterative_remove_cells : FAIL" + ansi.RESET)
 
     return b

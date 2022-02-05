@@ -1,3 +1,4 @@
+from pydoc import doc
 import sys
 
 import libs.solver as solver
@@ -34,9 +35,10 @@ def generate():
     m = solver.generate_empty_data(9)
 
     # Recursive generation algorithm is deprecated since it overflows C stack.
-    sys.setrecursionlimit(5000)
+    # Uncomment if you want to toy with stack overflows.
     recursive_generate(m)
-    recursive_remove_cells(m)
+    #recursive_remove_cells(m)
+    #iterative_remove_cells(m)
 
     return m
 
@@ -44,6 +46,7 @@ def generate():
 def recursive_generate(m):
     # This algorithm exceeds recursion stack limit so we first need to increase it a bit.
     # This will eventually lead to stack overflow.
+    sys.setrecursionlimit(5000)
 
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
@@ -83,7 +86,6 @@ def recursive_generate(m):
 
 # Removes random cells, but keeps the sudoku grid solvable.
 # Recursive remove_cells algorithm overflows C stack (Python virtual machine runs C code).
-# Deprecated. Uncomment if you want to toy with stack overflows.
 def recursive_remove_cells(m):
 
     while solver.is_solvable(m):
@@ -108,6 +110,24 @@ def recursive_remove_cells(m):
         else:
             m[s._x][s._y] = i
             return solver.is_solvable(m)
+
+    return solver.is_solvable(m)
+
+# Removes random cells, but keeps the sudoku grid solvable.
+# Iterative algorith keeps stack size reasonable
+def iterative_remove_cells(m):
+    i = 0
+    s = coordinates(lcg.randrange(0, 9), lcg.randrange2(0, 9))
+
+    while solver.is_solvable(m):
+        while m[s._x][s._y] == 0:
+            s._x = lcg.randrange(0, 9)
+            s._y = lcg.randrange2(0, 9)
+
+        i = m[s._x][s._y]
+        m[s._x][s._y] = 0
+    
+    m[s._x][s._y] = i
 
     return solver.is_solvable(m)
 
