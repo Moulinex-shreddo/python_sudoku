@@ -34,11 +34,11 @@ def recursive_solve(m):
 def generate():
     m = solver.generate_empty_data(9)
 
-    # Recursive generation algorithm
+    # Recursive generation algorithm.
     recursive_generate(m)
     #recursive_remove_cells(m)
 
-    # Iterative generation algorithm uses the stack less.
+    # Iterative generation algorithm.
     #iterative_generate(m)
     iterative_remove_cells(m)
 

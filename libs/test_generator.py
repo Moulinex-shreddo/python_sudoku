@@ -5,9 +5,9 @@ import libs.solver as solver
 def test_generator():
     b = True
 
-    #b &= test_brute_force_recursive_generate()
-    #b &= test_brute_force_recursive_remove_cells()
-    b &= test_brute_force_iterative_generate()
+    b &= test_brute_force_recursive_generate()
+    b &= test_brute_force_recursive_remove_cells()
+    #b &= test_brute_force_iterative_generate()
     b &= test_brute_force_iterative_remove_cells()
 
     if b:
@@ -20,6 +20,7 @@ def test_generator():
 def test_brute_force_recursive_generate():
     b = True
 
+    # Increase range to run burn tests, it may take a while though.
     for i in range(1):
         m = solver.generate_empty_data(9)
         brute_force.recursive_generate(m)
@@ -32,7 +33,7 @@ def test_brute_force_recursive_generate():
 
     return b
 
-#def test_brute_force_recursive_remove_cells():
+def test_brute_force_recursive_remove_cells():
     b = True
     m = brute_force.generate()
     b &= solver.is_solvable(m)
@@ -44,7 +45,7 @@ def test_brute_force_recursive_generate():
 
     return b
 
-def test_brute_force_iterative_generate():
+#def test_brute_force_iterative_generate():
     b = True
 
     for i in range(100): # Burn tests
@@ -62,7 +63,7 @@ def test_brute_force_iterative_generate():
 def test_brute_force_iterative_remove_cells():
     b = True
 
-    for i in range(10):
+    for i in range(1):
         m = brute_force.generate()
         b &= solver.is_solvable(m)
 
