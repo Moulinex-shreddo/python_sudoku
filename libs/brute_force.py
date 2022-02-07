@@ -4,11 +4,11 @@ import sys
 import libs.solver as solver
 import libs.lcg as lcg
 
-# Returns True if the matrix could be solved with brute_force algorithm, False otherwise
+# Returns True if the matrix could be solved with brute_force algorithm, False otherwise.
 def solve(m):
     return recursive_solve(m)
 
-# recursive_solve is a separate function for clarity purpose
+# recursive_solve is a separate function for clarity purpose.
 def recursive_solve(m):
 
     for x in range(len(m[0])):
@@ -24,23 +24,22 @@ def recursive_solve(m):
                             m[x][y] = 0
 
                 # If no valid number was found for (x, y) cell, then the sudoku is not solvable with
-                # the actual configuration and we need to backtrack
+                # the actual configuration and we need to backtrack.
                 return False
 
     return solver.is_grid_valid(m)
 
-# Returns a randomly generated grid
-# It's more or less the same algorithm as the brute_force solver on an empty grid (and randomly applied)
+# Returns a randomly generated grid.
+# It's more or less the same algorithm as the brute_force solver on an empty grid (and randomly applied).
 def generate():
     m = solver.generate_empty_data(9)
 
-    # Recursive generation algorithm is deprecated since it may overflow C stack (depending on the environment).
-    # Unsafe.
-    #recursive_generate(m)
+    # Recursive generation algorithm
+    recursive_generate(m)
     #recursive_remove_cells(m)
 
-    # Iterative generation algorithm use the stack less, so it is safe.
-    iterative_generate(m)
+    # Iterative generation algorithm uses the stack less.
+    #iterative_generate(m)
     iterative_remove_cells(m)
 
     return m
@@ -48,11 +47,10 @@ def generate():
 # Recursively generates a sudoku grid.
 def recursive_generate(m):
     # This algorithm exceeds recursion stack limit so we first need to increase it a bit.
-    # This will eventually lead to stack overflow.
     sys.setrecursionlimit(5000)
 
     while not solver.is_grid_filled(m):
-        # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
+        # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell.
         x = lcg.randrange_light(0, 9)
         y = 1 # y is not randomly generated, this would slow the algorithm down by too much.
         s = coordinates(x, y)
@@ -88,13 +86,12 @@ def recursive_generate(m):
     return solver.is_grid_valid(m)
 
 # Removes random cells, but keeps the sudoku grid solvable.
-# Recursive remove_cells algorithm overflows C stack (Python virtual machine runs C code).
 def recursive_remove_cells(m):
     sys.setrecursionlimit(5000)
 
     while solver.is_solvable(m):
-        x = lcg.randrange(0, 9)
-        y = lcg.randrange2(0, 9)
+        x = lcg.randrange_light(0, 9)
+        y = lcg.randrange_light(0, 9)
         s = coordinates(x, y)
 
         while m[s._x][s._y] == 0:
@@ -126,7 +123,7 @@ def iterative_generate(m):
         x = lcg.randrange_light(0, 9)
         y = lcg.randrange_light(0, 9)
 
-        # Looking for an empty cell to fill, starting from a random one
+        # Looking for an empty cell to fill, starting from a random one.
         while m[x][y] != 0:
             
             x += 1
@@ -147,6 +144,7 @@ def iterative_generate(m):
         while True:
             if solver.is_number_valid(m, lifo[0]._i, (lifo[0]._x, lifo[0]._y)):
                 m[lifo[0]._x][lifo[0]._y] = lifo[0]._i
+                print(m)
                 break
 
             while True:
@@ -158,7 +156,6 @@ def iterative_generate(m):
                 if lifo[0]._i == lifo[0]._r:
                     m[lifo[0]._x][lifo[0]._y] = 0
                     lifo.pop(0)
-                    m[lifo[0]._x][lifo[0]._y] = 0
                 else:
                     break
 
@@ -167,7 +164,6 @@ def iterative_generate(m):
 # Removes random cells, but keeps the sudoku grid solvable.
 # Iterative algorith keeps stack size reasonable.
 def iterative_remove_cells(m):
-    sys.setrecursionlimit(500)
     i = 0
     s = coordinates(lcg.randrange_light(0, 9), lcg.randrange_light(0, 9))
 
