@@ -34,11 +34,12 @@ def recursive_solve(m):
 def generate():
     m = solver.generate_empty_data(9)
 
-    # Recursive generation algorithm is deprecated since it overflows C stack.
-    # Uncomment if you want to toy with stack overflows.
+    # Recursive generation algorithm is deprecated since it may overflow C stack (depending on the environment).
+    # Unsafe.
     #recursive_generate(m)
     #recursive_remove_cells(m)
 
+    # Iterative generation algorithm use the stack less, so it is safe.
     iterative_generate(m)
     iterative_remove_cells(m)
 
@@ -53,10 +54,10 @@ def recursive_generate(m):
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
         x = lcg.randrange_light(0, 9)
-        y = 1 # y is not randomly generated, this would slow the algorithm down by too much
+        y = 1 # y is not randomly generated, this would slow the algorithm down by too much.
         s = coordinates(x, y)
 
-        # Looking for an empty cell to fill, starting from a random one
+        # Looking for an empty cell to fill, starting from a random one.
         while m[s._x][s._y] != 0:
             
             s._x += 1
@@ -117,9 +118,9 @@ def recursive_remove_cells(m):
     return solver.is_solvable(m)
 
 
-# Iteratively generates a sudoku grid, keeping stack size reasonable
+# Iteratively generates a sudoku grid, keeping stack size reasonable.
 def iterative_generate(m):
-    # This lifo will be stocked in the heap, so we will not have stack overflow
+    # This lifo will be stocked in the heap, so we will not have stack overflow.
     lifo = []
     while not solver.is_grid_filled(m):
         x = lcg.randrange_light(0, 9)

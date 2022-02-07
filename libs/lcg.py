@@ -2,6 +2,9 @@
 # We started working on two linera congruential generators to generate (x, y) coordinates but
 # using time as a seed is enough for our use case.
 
+# LCGs are still found in our recursive algorithms.
+# We do not use them anymore so we did not update them.
+
 import time
 from typing import Generator
 
