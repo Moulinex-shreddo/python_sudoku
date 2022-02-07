@@ -36,9 +36,11 @@ def generate():
 
     # Recursive generation algorithm is deprecated since it overflows C stack.
     # Uncomment if you want to toy with stack overflows.
-    recursive_generate(m)
+    #recursive_generate(m)
     #recursive_remove_cells(m)
-    #iterative_remove_cells(m)
+
+    iterative_generate(m)
+    iterative_remove_cells(m)
 
     return m
 
@@ -50,7 +52,7 @@ def recursive_generate(m):
 
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell
-        x = lcg.randrange(0, 9)
+        x = lcg.randrange_light(0, 9)
         y = 1 # y is not randomly generated, this would slow the algorithm down by too much
         s = coordinates(x, y)
 
@@ -65,7 +67,7 @@ def recursive_generate(m):
                 if s._y == 9:
                     s._y = 0
 
-        r = lcg.randrange(1, 9)
+        r = lcg.randrange_light(1, 9)
         i = r
         while True:
             if solver.is_number_valid(m, i, (s._x, s._y)):
@@ -77,7 +79,7 @@ def recursive_generate(m):
 
             i += 1
             if i == 10:
-                i = 0
+                i = 1
             
             if i == r:
                 return False
@@ -87,6 +89,7 @@ def recursive_generate(m):
 # Removes random cells, but keeps the sudoku grid solvable.
 # Recursive remove_cells algorithm overflows C stack (Python virtual machine runs C code).
 def recursive_remove_cells(m):
+    sys.setrecursionlimit(5000)
 
     while solver.is_solvable(m):
         x = lcg.randrange(0, 9)
@@ -113,16 +116,64 @@ def recursive_remove_cells(m):
 
     return solver.is_solvable(m)
 
+
+# Iteratively generates a sudoku grid, keeping stack size reasonable
+def iterative_generate(m):
+    # This lifo will be stocked in the heap, so we will not have stack overflow
+    lifo = []
+    while not solver.is_grid_filled(m):
+        x = lcg.randrange_light(0, 9)
+        y = lcg.randrange_light(0, 9)
+
+        # Looking for an empty cell to fill, starting from a random one
+        while m[x][y] != 0:
+            
+            x += 1
+            if x == 9:
+                x = 0
+                y = y + 1
+
+                if y == 9:
+                    y = 0
+
+        r = lcg.randrange_light(1, 9)
+        c = cell_possibilities(x, y, r, r)
+
+        # There is no default LIFO class in Python so we will simulate it with an array.
+        # We always insert data at index 0 and pop index 0 whenever we need to remove it.
+        lifo.insert(0, c)
+
+        while True:
+            if solver.is_number_valid(m, lifo[0]._i, (lifo[0]._x, lifo[0]._y)):
+                m[lifo[0]._x][lifo[0]._y] = lifo[0]._i
+                break
+
+            while True:
+                lifo[0]._i += 1
+
+                if lifo[0]._i == 10:
+                    lifo[0]._i = 1
+
+                if lifo[0]._i == lifo[0]._r:
+                    m[lifo[0]._x][lifo[0]._y] = 0
+                    lifo.pop(0)
+                    m[lifo[0]._x][lifo[0]._y] = 0
+                else:
+                    break
+
+    return solver.is_grid_valid(m)
+
 # Removes random cells, but keeps the sudoku grid solvable.
-# Iterative algorith keeps stack size reasonable
+# Iterative algorith keeps stack size reasonable.
 def iterative_remove_cells(m):
+    sys.setrecursionlimit(500)
     i = 0
-    s = coordinates(lcg.randrange(0, 9), lcg.randrange2(0, 9))
+    s = coordinates(lcg.randrange_light(0, 9), lcg.randrange_light(0, 9))
 
     while solver.is_solvable(m):
         while m[s._x][s._y] == 0:
-            s._x = lcg.randrange(0, 9)
-            s._y = lcg.randrange2(0, 9)
+            s._x = lcg.randrange_light(0, 9)
+            s._y = lcg.randrange_light(0, 9)
 
         i = m[s._x][s._y]
         m[s._x][s._y] = 0
@@ -131,8 +182,16 @@ def iterative_remove_cells(m):
 
     return solver.is_solvable(m)
 
-# We need a class here because tuples are not mutable and structures do not exist
+# We need a class here because tuples are not mutable and structures do not exist.
 class coordinates:
     def __init__(self, x, y) -> None:
         self._x = x
         self._y = y
+
+# We need another class for the iterative generation algorithm, again, because tuples are not mutable.
+class cell_possibilities:
+    def __init__(self, x, y, r, i) -> None:
+        self._x = x
+        self._y = y
+        self._r = r
+        self._i = i

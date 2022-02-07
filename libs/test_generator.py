@@ -5,8 +5,9 @@ import libs.solver as solver
 def test_generator():
     b = True
 
-    b &= test_brute_force_recursive_generate()
+    #b &= test_brute_force_recursive_generate()
     #b &= test_brute_force_recursive_remove_cells()
+    b &= test_brute_force_iterative_generate()
     b &= test_brute_force_iterative_remove_cells()
 
     if b:
@@ -43,10 +44,27 @@ def test_brute_force_recursive_generate():
 
     return b
 
+def test_brute_force_iterative_generate():
+    b = True
+
+    for i in range(100): # Burn tests
+        m = solver.generate_empty_data(9)
+        brute_force.iterative_generate(m)
+        b &= solver.is_grid_valid(m)
+
+    if b:
+        print(ansi.GREEN + "test_generator/brute_force_iterative_generate : PASS" + ansi.RESET)
+    else:
+        print(ansi.RED + "test_generator/brute_force_iterative_generate : FAIL" + ansi.RESET)
+
+    return b
+
 def test_brute_force_iterative_remove_cells():
     b = True
-    m = brute_force.generate()
-    b &= solver.is_solvable(m)
+
+    for i in range(10):
+        m = brute_force.generate()
+        b &= solver.is_solvable(m)
 
     if b:
         print(ansi.GREEN + "test_generator/brute_force_iterative_remove_cells : PASS" + ansi.RESET)

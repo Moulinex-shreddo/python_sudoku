@@ -11,6 +11,6 @@ if __name__ == '__main__':
     b &= test_generator.test_generator()
 
     if b:
-        print(ansi.GREEN + "Global Status : PASS" + ansi.RESET)
+        print(ansi.GREEN + "Global Status : PASS" + ansi.RESET) 
     else:
         print(ansi.RED + "Global Status : FAIL" + ansi.RESET)
