@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import pyqtSlot
+import libs.solver as solver
 
 class item_delegate(QtWidgets.QStyledItemDelegate):
     def __init__(self, owner):
@@ -24,7 +24,7 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
         editor = self.sender()
         self.commitData.emit(editor)
 
-    def setEditorData(self, editor, index): #dummy
+    def setEditorData(self, editor, index):
         value = index.data(QtCore.Qt.DisplayRole)
         if (str(value) in self._items):
             i = self._items.index(str(value))
@@ -35,6 +35,12 @@ class item_delegate(QtWidgets.QStyledItemDelegate):
     def setModelData(self, editor, model, index):
         value = editor.currentText()
         model.setData(index, value, QtCore.Qt.EditRole)
+
+        if solver.is_grid_valid(model._data):
+            win_message_box = QtWidgets.QMessageBox()
+            win_message_box.setWindowTitle("Congratulations!")
+            win_message_box.setText("You won!")
+            win_message_box.exec()
 
     def updateEditorGeometry(self, editor, option, index):
         editor.setGeometry(option.rect)
