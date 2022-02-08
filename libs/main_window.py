@@ -79,14 +79,3 @@ class main_window(QtWidgets.QMainWindow):
 
     def load_grid(self):
         return False
-
-
-class save_action(QtWidgets.QAction):
-    def __init_subclass__(cls) -> None:
-        return super().__init_subclass__()
-
-    def activate(self, event: 'QAction.ActionEvent') -> None:
-        win_message_box = QtWidgets.QMessageBox()
-        win_message_box.setWindowTitle("Congratulations!")
-        win_message_box.setText("You won!")
-        win_message_box.exec()
