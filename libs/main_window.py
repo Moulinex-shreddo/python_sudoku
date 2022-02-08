@@ -18,11 +18,15 @@ class main_window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.create_tool_bar()
+
         self.create_table_view()
 
         self.setMinimumSize(width, height)
         self.setWindowTitle("PySudoku")
         self.setCentralWidget(self._table_view)
+
+        self.show()
 
     def create_table_view(self):
         data = brute_force.generate()
@@ -46,3 +50,43 @@ class main_window(QtWidgets.QMainWindow):
         #Hide headers
         self._table_view.horizontalHeader().hide()
         self._table_view.verticalHeader().hide()
+
+    def create_tool_bar(self):
+        _exit_action = QtWidgets.QAction("&Exit", self)
+        _exit_action.setShortcut("Ctrl+Q")
+        _exit_action.setStatusTip("Exit")
+        _exit_action.triggered.connect(QtWidgets.qApp.quit)
+
+        _save_action = QtWidgets.QAction("&Save", self)
+        _save_action.setShortcut("Ctrl+S")
+        _save_action.setStatusTip("Saves the grid")
+        _save_action.triggered.connect(self.save_grid)
+
+        _load_action = QtWidgets.QAction("&Load", self)
+        _load_action.setShortcut("Ctrl+O")
+        _load_action.setStatusTip("Loads a grid")
+        _load_action.triggered.connect(self.load_grid)
+
+        _tool_bar = self.menuBar()
+        _file_menu = _tool_bar.addMenu("&File")
+        _file_menu.addAction(_save_action)
+        _file_menu.addAction(_load_action)
+        _file_menu.addSeparator()
+        _file_menu.addAction(_exit_action)
+
+    def save_grid(self):
+        return False
+
+    def load_grid(self):
+        return False
+
+
+class save_action(QtWidgets.QAction):
+    def __init_subclass__(cls) -> None:
+        return super().__init_subclass__()
+
+    def activate(self, event: 'QAction.ActionEvent') -> None:
+        win_message_box = QtWidgets.QMessageBox()
+        win_message_box.setWindowTitle("Congratulations!")
+        win_message_box.setText("You won!")
+        win_message_box.exec()
