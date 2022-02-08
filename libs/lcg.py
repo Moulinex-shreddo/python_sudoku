@@ -18,10 +18,10 @@ def lcg(m, a, c, seed) -> Generator[int, None, None]:
 
 # We need two randrange functions to generate non-related (x, y) coordinates.
 def randrange(a, b):
-    return next(lcg((2<<16) + 1, 75, 74, time.time_ns()))%b + a #ZX81 LCG arguments.
+    return next(lcg((1<<16) + 1, 75, 74, time.time_ns()))%b + a #ZX81 LCG arguments.
 
 def randrange2(a, b):
-    return next(lcg(2 << 24, 0x43FD43FD, 0xC39EC3, time.time_ns()))%b + a #Microsoft Visual Basic LCG arguments.
+    return next(lcg(1 << 24, 0x43FD43FD, 0xC39EC3, time.time_ns()))%b + a #Microsoft Visual Basic LCG arguments.
 
 # A simpler randrange function with no LCG.
 def randrange_light(a, b):
