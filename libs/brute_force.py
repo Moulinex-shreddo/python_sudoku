@@ -1,6 +1,6 @@
-from pydoc import doc
 import sys
 
+import libs.config as config
 import libs.solver as solver
 import libs.lcg as lcg
 
@@ -164,18 +164,21 @@ def iterative_generate(m):
 # Removes random cells, but keeps the sudoku grid solvable.
 # Iterative algorith keeps stack size reasonable.
 def iterative_remove_cells(m):
+    difficulty = config.get_difficulty()
     i = 0
     s = coordinates(lcg.randrange_light(0, 9), lcg.randrange_light(0, 9))
 
-    while solver.is_solvable(m):
-        while m[s._x][s._y] == 0:
-            s._x = lcg.randrange_light(0, 9)
-            s._y = lcg.randrange_light(0, 9)
+    while difficulty > 0:
+        while solver.is_solvable(m):
+            while m[s._x][s._y] == 0:
+                s._x = lcg.randrange_light(0, 9)
+                s._y = lcg.randrange_light(0, 9)
 
-        i = m[s._x][s._y]
-        m[s._x][s._y] = 0
+            i = m[s._x][s._y]
+            m[s._x][s._y] = 0
     
-    m[s._x][s._y] = i
+        m[s._x][s._y] = i
+        difficulty -= 1
 
     return solver.is_solvable(m)
 

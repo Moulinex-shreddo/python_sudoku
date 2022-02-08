@@ -4,12 +4,14 @@ from libs.item_delegate import item_delegate
 from libs.table_model import table_model
 import libs.solver as solver
 import libs.brute_force as brute_force
+import libs.config as config
 
 
 cell_size = 40
 
-height = 9 * (cell_size+1)
-width = height
+
+height = config.get_window_height()
+width = config.get_window_width()
 
 
 class main_window(QtWidgets.QMainWindow):

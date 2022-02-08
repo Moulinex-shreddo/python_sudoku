@@ -1,7 +1,8 @@
 python_sudoku project
 
-Install PyQt5 to run this app :
+Install PyQt5 and configparser to run this app :
 pip install PyQt5
+pip install configparser
 
 Python version >= 3.10.1 is recommended.
 
