@@ -34,6 +34,8 @@ def recursive_solve(m):
 def generate():
     m = solver.generate_empty_data(9)
 
+    # Recursive generate and iterative remove give the best grid distribution.
+
     # Recursive generation algorithm.
     recursive_generate(m)
     #recursive_remove_cells(m)

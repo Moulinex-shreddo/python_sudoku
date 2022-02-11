@@ -75,7 +75,21 @@ class main_window(QtWidgets.QMainWindow):
         _file_menu.addAction(_exit_action)
 
     def save_grid(self):
+        file_name = QtWidgets.QFileDialog.getSaveFileName(self, "Save Grid")
+        return print(str(file_name))
+        f = open(str(file_name), "w")
+        for i in range(9):
+            for j in range(9):
+                f.write(str(self._table_model._data[i][j]))
+
+        for i in range(9):
+            for j in range(9):
+                f.write(str(self._table_model._base_grid[i][j]))
+
+        f.close()
+
         return False
 
     def load_grid(self):
+        file_name = QtWidgets.QFileDialog.getOpenFileName(self, "Load Grid", "", "Sudoku (*.sdk)")
         return False
