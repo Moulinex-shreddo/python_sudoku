@@ -51,7 +51,28 @@ class main_window(QtWidgets.QMainWindow):
         self._table_view.horizontalHeader().hide()
         self._table_view.verticalHeader().hide()
 
+    def reset_table_view(self, data):
+        self._table_view = QtWidgets.QTableView()
+        table_item_delegate = item_delegate(self._table_view)
+        self._table_model = table_model(data)
+        self._table_view.setModel(self._table_model)
+        self._table_view.setItemDelegate(table_item_delegate)
+
+        #Resize
+        for i in range(9):
+            self._table_view.setColumnWidth(i, cell_size)
+            self._table_view.setRowHeight(i, cell_size)
+
+        #Hide headers
+        self._table_view.horizontalHeader().hide()
+        self._table_view.verticalHeader().hide()
+
     def create_tool_bar(self):
+        _new_action = QtWidgets.QAction("&New", self)
+        _new_action.setShortcut("Ctrl+N")
+        _new_action.setStatusTip("Generate New Grid")
+        _new_action.triggered.connect(self.generate_new_grid)
+
         _exit_action = QtWidgets.QAction("&Exit", self)
         _exit_action.setShortcut("Ctrl+Q")
         _exit_action.setStatusTip("Exit")
@@ -69,27 +90,44 @@ class main_window(QtWidgets.QMainWindow):
 
         _tool_bar = self.menuBar()
         _file_menu = _tool_bar.addMenu("&File")
+        _file_menu.addAction(_new_action)
+        _file_menu.addSeparator()
         _file_menu.addAction(_save_action)
         _file_menu.addAction(_load_action)
         _file_menu.addSeparator()
         _file_menu.addAction(_exit_action)
 
+    def generate_new_grid(self):
+        data = brute_force.generate()
+        self.reset_table_view(data)
+        self.setCentralWidget(self._table_view)
+
     def save_grid(self):
-        file_name = QtWidgets.QFileDialog.getSaveFileName(self, "Save Grid")
-        return print(str(file_name))
-        f = open(str(file_name), "w")
+        s = QtWidgets.QFileDialog.getSaveFileName(self, "Save Grid", "", "Sudoku (*.sdk)")
+        file_name = s[0]
+        f = open(file_name, "w")
         for i in range(9):
             for j in range(9):
                 f.write(str(self._table_model._data[i][j]))
 
-        for i in range(9):
-            for j in range(9):
-                f.write(str(self._table_model._base_grid[i][j]))
-
         f.close()
 
-        return False
-
     def load_grid(self):
-        file_name = QtWidgets.QFileDialog.getOpenFileName(self, "Load Grid", "", "Sudoku (*.sdk)")
-        return False
+        s = QtWidgets.QFileDialog.getOpenFileName(self, "Load Grid", "", "Sudoku (*.sdk)")
+        file_name = s[0]
+        f = open(file_name, "r")
+        s = f.read()
+
+        k = 0
+
+        data = solver.generate_empty_data(9)
+
+        for i in range(9):
+            for j in range(9):
+                data[i][j] = int(s[k])
+                k += 1
+
+        self.reset_table_view(data)
+        self.setCentralWidget(self._table_view)
+
+        f.close()

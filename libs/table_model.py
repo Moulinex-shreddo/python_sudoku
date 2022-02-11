@@ -6,7 +6,6 @@ class table_model(QtCore.QAbstractTableModel):
     def __init__(self, data):
         super(table_model, self).__init__()
         self._data = data
-        self._base_grid = deepcopy(data)
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
