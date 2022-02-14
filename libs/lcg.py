@@ -21,8 +21,10 @@ def randrange(a, b):
         return randrange_light(a, b)
     elif config.get_random_generator_type() == 1:
         return randrange1(a, b)
-    else:
+    elif config.get_random_generator_type() == 2:
         return randrange2(a, b)
+    elif config.get_random_generator_type() == 3:
+        return randrange3(a, b)
 
 # We need two randrange functions to generate non-related (x, y) coordinates.
 def randrange1(a, b):
@@ -30,6 +32,9 @@ def randrange1(a, b):
 
 def randrange2(a, b):
     return next(lcg(1 << 24, 0x43FD43FD, 0xC39EC3, time.time_ns()))%b + a #Microsoft Visual Basic LCG arguments.
+
+def randrange3(a, b):
+    return (next(lcg(1<<48, 0x5DEECE66D, 11, time.time_ns())) >> 16)%b + a # Java (java.utils.Random) LCG arguments and truncation.
 
 # A simpler randrange function with no LCG.
 def randrange_light(a, b):
