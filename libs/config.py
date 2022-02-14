@@ -26,3 +26,15 @@ def get_difficulty():
     if d > 5 or d < 1:
         return 3
     return d
+
+def get_generation_algorithm_type():
+    c = configparser.ConfigParser()
+    c.read("config.ini")
+
+    return c["generation_algorithm"].getint("type")
+
+def get_random_generator_type():
+    c = configparser.ConfigParser()
+    c.read("config.ini")
+
+    return c["random_generator"].getint("type")

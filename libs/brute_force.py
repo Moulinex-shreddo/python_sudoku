@@ -34,15 +34,14 @@ def recursive_solve(m):
 def generate():
     m = solver.generate_empty_data(9)
 
-    # Recursive generate and iterative remove give the best grid distribution.
-
-    # Recursive generation algorithm.
-    recursive_generate(m)
-    #recursive_remove_cells(m)
-
-    # Iterative generation algorithm.
-    #iterative_generate(m)
-    iterative_remove_cells(m)
+    if not (config.get_generation_algorithm_type() & 0b10):
+        recursive_generate(m)
+    else:
+        iterative_generate(m)
+    if not (config.get_generation_algorithm_type() & 0b1):
+        recursive_remove_cells(m)
+    else:
+        iterative_remove_cells(m)
 
     return m
 
@@ -53,7 +52,7 @@ def recursive_generate(m):
 
     while not solver.is_grid_filled(m):
         # We need to make copies of every randomly generated number in order to check if we iterate over every possible cell/value per cell.
-        x = lcg.randrange_light(0, 9)
+        x = lcg.randrange(0, 9)
         y = 1 # y is not randomly generated, this would slow the algorithm down by too much.
         s = coordinates(x, y)
 
@@ -68,7 +67,7 @@ def recursive_generate(m):
                 if s._y == 9:
                     s._y = 0
 
-        r = lcg.randrange_light(1, 9)
+        r = lcg.randrange(1, 9)
         i = r
         while True:
             if solver.is_number_valid(m, i, (s._x, s._y)):
@@ -92,8 +91,8 @@ def recursive_remove_cells(m):
     sys.setrecursionlimit(5000)
 
     while solver.is_solvable(m):
-        x = lcg.randrange_light(0, 9)
-        y = lcg.randrange_light(0, 9)
+        x = lcg.randrange(0, 9)
+        y = lcg.randrange(0, 9)
         s = coordinates(x, y)
 
         while m[s._x][s._y] == 0:
@@ -122,8 +121,8 @@ def iterative_generate(m):
     # This lifo will be stocked in the heap, so we will not have stack overflow.
     lifo = []
     while not solver.is_grid_filled(m):
-        x = lcg.randrange_light(0, 9)
-        y = lcg.randrange_light(0, 9)
+        x = lcg.randrange(0, 9)
+        y = lcg.randrange(0, 9)
 
         # Looking for an empty cell to fill, starting from a random one.
         while m[x][y] != 0:
@@ -136,7 +135,7 @@ def iterative_generate(m):
                 if y == 9:
                     y = 0
 
-        r = lcg.randrange_light(1, 9)
+        r = lcg.randrange(1, 9)
         c = cell_possibilities(x, y, r, r)
 
         # There is no default LIFO class in Python so we will simulate it with an array.
@@ -146,7 +145,6 @@ def iterative_generate(m):
         while True:
             if solver.is_number_valid(m, lifo[0]._i, (lifo[0]._x, lifo[0]._y)):
                 m[lifo[0]._x][lifo[0]._y] = lifo[0]._i
-                print(m)
                 break
 
             while True:
@@ -168,13 +166,13 @@ def iterative_generate(m):
 def iterative_remove_cells(m):
     difficulty = config.get_difficulty()
     i = 0
-    s = coordinates(lcg.randrange_light(0, 9), lcg.randrange_light(0, 9))
+    s = coordinates(lcg.randrange(0, 9), lcg.randrange(0, 9))
 
     while difficulty > 0:
         while solver.is_solvable(m):
             while m[s._x][s._y] == 0:
-                s._x = lcg.randrange_light(0, 9)
-                s._y = lcg.randrange_light(0, 9)
+                s._x = lcg.randrange(0, 9)
+                s._y = lcg.randrange(0, 9)
 
             i = m[s._x][s._y]
             m[s._x][s._y] = 0

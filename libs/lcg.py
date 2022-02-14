@@ -6,6 +6,7 @@
 # We do not use them anymore so we did not update them.
 
 import time
+import libs.config as config
 from typing import Generator
 
 # Returns a random number generator based on parameters.
@@ -15,9 +16,16 @@ def lcg(m, a, c, seed) -> Generator[int, None, None]:
         seed = (a*seed + c) % m
         yield seed
 
+def randrange(a, b):
+    if config.get_random_generator_type() == 0:
+        return randrange_light(a, b)
+    elif config.get_random_generator_type() == 1:
+        return randrange1(a, b)
+    else:
+        return randrange2(a, b)
 
 # We need two randrange functions to generate non-related (x, y) coordinates.
-def randrange(a, b):
+def randrange1(a, b):
     return next(lcg((1<<16) + 1, 75, 74, time.time_ns()))%b + a #ZX81 LCG arguments.
 
 def randrange2(a, b):
